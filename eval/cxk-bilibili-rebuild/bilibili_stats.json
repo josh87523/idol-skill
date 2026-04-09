@@ -1,21 +1,21 @@
 {
   "language_mix": {
-    "cn": 0.9348414330555255,
-    "en": 0.06515856694447451
+    "cn": 0.9338455222567591,
+    "en": 0.06615447774324086
   },
-  "avg_sentence_length": 41.52212389380531,
+  "avg_sentence_length": 46.43935309973046,
   "tone_particles": {
-    "哈": 12,
-    "哎": 1,
-    "哦": 7,
-    "啊": 41,
-    "吧": 34,
-    "呀": 3,
-    "嗯": 9,
-    "呢": 13,
-    "嘛": 16,
-    "ok": 3,
-    "诶": 3
+    "哈": 31,
+    "哎": 11,
+    "哦": 9,
+    "啊": 80,
+    "吧": 53,
+    "呀": 7,
+    "嗯": 31,
+    "呢": 16,
+    "嘛": 31,
+    "ok": 14,
+    "诶": 7
   },
   "sentence_types": {
     "statement": 1.0,
@@ -24,12 +24,24 @@
   },
   "frequent_en_phrases": [
     {
+      "phrase": "get",
+      "count": 15
+    },
+    {
       "phrase": "mv",
-      "count": 11
+      "count": 15
+    },
+    {
+      "phrase": "hard",
+      "count": 15
     },
     {
       "phrase": "deadman",
       "count": 7
+    },
+    {
+      "phrase": "la",
+      "count": 6
     },
     {
       "phrase": "one",
@@ -37,6 +49,10 @@
     },
     {
       "phrase": "take",
+      "count": 5
+    },
+    {
+      "phrase": "wait",
       "count": 5
     },
     {
@@ -48,7 +64,27 @@
       "count": 4
     },
     {
+      "phrase": "studio",
+      "count": 4
+    },
+    {
+      "phrase": "live",
+      "count": 4
+    },
+    {
+      "phrase": "it's",
+      "count": 4
+    },
+    {
+      "phrase": "dj",
+      "count": 4
+    },
+    {
       "phrase": "up",
+      "count": 3
+    },
+    {
+      "phrase": "life",
       "count": 3
     },
     {
@@ -68,15 +104,27 @@
       "count": 3
     },
     {
+      "phrase": "can",
+      "count": 3
+    },
+    {
+      "phrase": "b",
+      "count": 3
+    },
+    {
+      "phrase": "play",
+      "count": 3
+    },
+    {
+      "phrase": "bigger",
+      "count": 3
+    },
+    {
       "phrase": "iphone",
       "count": 2
     },
     {
       "phrase": "pull",
-      "count": 2
-    },
-    {
-      "phrase": "life",
       "count": 2
     },
     {
@@ -112,19 +160,39 @@
       "count": 2
     },
     {
-      "phrase": "b",
-      "count": 2
-    },
-    {
-      "phrase": "studio",
-      "count": 2
-    },
-    {
       "phrase": "freestyle",
       "count": 2
     },
     {
       "phrase": "camp",
+      "count": 2
+    },
+    {
+      "phrase": "hello",
+      "count": 2
+    },
+    {
+      "phrase": "q",
+      "count": 2
+    },
+    {
+      "phrase": "house",
+      "count": 2
+    },
+    {
+      "phrase": "be",
+      "count": 2
+    },
+    {
+      "phrase": "girlfriend",
+      "count": 2
+    },
+    {
+      "phrase": "crazy",
+      "count": 2
+    },
+    {
+      "phrase": "pose",
       "count": 2
     }
   ],
