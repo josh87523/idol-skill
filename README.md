@@ -7,34 +7,14 @@
 ## 安装
 
 ```bash
-# 1. 克隆仓库
-git clone https://github.com/josh87523/idol-skill.git
-cd idol-skill
-
-# 2. 安装 Python 依赖
-pip install bilibili-api-python
-
-# 3. 登录 B站（获取字幕需要）
-python3 tools/bilibili_auth.py login
-# 终端会显示二维码，用 B站 App 扫码登录
-
-# 4. 注册到 Claude Code
-# 把 idol-skill 目录路径加入 Claude Code 的 skills 配置
-# 方法 A：复制到 skills 目录
-cp -r idol-skill ~/.claude/skills/idol-skill
-
-# 方法 B：symlink
-ln -s $(pwd) ~/.claude/skills/idol-skill
+# 1. 克隆到 Claude Code skills 目录
+git clone https://github.com/josh87523/idol-skill.git ~/.claude/skills/idol-skill
 ```
 
-验证安装：
-```bash
-# 检查 B站登录状态
-python3 tools/bilibili_auth.py check
-
-# 测试字幕抓取
-python3 tools/bilibili_fetcher.py search "蔡徐坤 采访"
-```
+没了。Python 依赖和 B站登录在首次 `/create-idol` 时自动处理：
+- `bilibili-api-python` 缺了会自动 `pip install`
+- B站凭证不存在会弹出二维码让你扫码
+- 数据目录自动创建
 
 ## 使用
 
@@ -115,5 +95,6 @@ idol-skill/
 
 - Claude Code（CLI 或桌面版）
 - Python 3.10+
-- `bilibili-api-python`（`pip install bilibili-api-python`）
-- B站账号（扫码登录，用于获取视频字幕）
+- B站账号（首次使用时扫码登录，用于获取视频字幕）
+
+其余依赖自动安装，无需手动操作。
