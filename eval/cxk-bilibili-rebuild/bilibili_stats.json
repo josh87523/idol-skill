@@ -1,0 +1,131 @@
+{
+  "language_mix": {
+    "cn": 0.9295589988081049,
+    "en": 0.07044100119189511
+  },
+  "avg_sentence_length": 42.04455445544554,
+  "tone_particles": {
+    "哈": 12,
+    "哎": 1,
+    "哦": 7,
+    "啊": 41,
+    "吧": 31,
+    "呀": 3,
+    "嗯": 9,
+    "呢": 13,
+    "嘛": 13,
+    "ok": 3,
+    "诶": 3
+  },
+  "sentence_types": {
+    "statement": 1.0,
+    "question": 0.0,
+    "exclamation": 0.0
+  },
+  "frequent_en_phrases": [
+    {
+      "phrase": "mv",
+      "count": 11
+    },
+    {
+      "phrase": "deadman",
+      "count": 7
+    },
+    {
+      "phrase": "one",
+      "count": 5
+    },
+    {
+      "phrase": "take",
+      "count": 5
+    },
+    {
+      "phrase": "call",
+      "count": 4
+    },
+    {
+      "phrase": "back",
+      "count": 4
+    },
+    {
+      "phrase": "up",
+      "count": 3
+    },
+    {
+      "phrase": "oh",
+      "count": 3
+    },
+    {
+      "phrase": "day",
+      "count": 3
+    },
+    {
+      "phrase": "jasmine",
+      "count": 3
+    },
+    {
+      "phrase": "time",
+      "count": 3
+    },
+    {
+      "phrase": "iphone",
+      "count": 2
+    },
+    {
+      "phrase": "pull",
+      "count": 2
+    },
+    {
+      "phrase": "life",
+      "count": 2
+    },
+    {
+      "phrase": "love",
+      "count": 2
+    },
+    {
+      "phrase": "don't",
+      "count": 2
+    },
+    {
+      "phrase": "word",
+      "count": 2
+    },
+    {
+      "phrase": "coder",
+      "count": 2
+    },
+    {
+      "phrase": "so",
+      "count": 2
+    },
+    {
+      "phrase": "f",
+      "count": 2
+    },
+    {
+      "phrase": "tonight",
+      "count": 2
+    },
+    {
+      "phrase": "nine",
+      "count": 2
+    },
+    {
+      "phrase": "b",
+      "count": 2
+    },
+    {
+      "phrase": "studio",
+      "count": 2
+    },
+    {
+      "phrase": "freestyle",
+      "count": 2
+    },
+    {
+      "phrase": "camp",
+      "count": 2
+    }
+  ]
+}
