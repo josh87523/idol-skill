@@ -1,0 +1,48 @@
+{
+  "_doc": "idol-skill 按需加载的 MCP servers。通过 /mcp 命令加载，用完即卸。",
+  "bilibili-subtitle": {
+    "command": "bilibili-subtitle-fetch",
+    "args": ["--preferred-lang", "zh-CN", "--output-format", "text"],
+    "env": {},
+    "when": "搜索到 B站采访/综艺视频时，加载获取字幕",
+    "needs_auth": false,
+    "install": "uv tool install --python 3.13 bilibili-subtitle-fetch"
+  },
+  "bilibili": {
+    "command": "npx",
+    "args": ["-y", "@wangshunnn/bilibili-mcp-server"],
+    "env": {},
+    "when": "需要搜索 B站视频、获取用户信息时",
+    "needs_auth": false,
+    "install": "npx -y @wangshunnn/bilibili-mcp-server (auto)"
+  },
+  "bilibili-video-info": {
+    "command": "uvx",
+    "args": ["bilibili-video-info-mcp"],
+    "env": {
+      "SESSDATA": "${BILIBILI_SESSDATA}"
+    },
+    "when": "需要获取 B站视频弹幕+字幕+评论时",
+    "needs_auth": true,
+    "auth_note": "需要 BILIBILI_SESSDATA cookie。浏览器 F12 → Application → Cookies → SESSDATA",
+    "install": "uvx bilibili-video-info-mcp (auto)"
+  },
+  "xiaohongshu": {
+    "command": "/tmp/xiaohongshu-mcp/xiaohongshu-mcp",
+    "args": [],
+    "env": {},
+    "when": "需要获取明星小红书账号笔记时",
+    "needs_auth": true,
+    "auth_note": "Go 项目，需编译。使用浏览器 cookie 登录",
+    "install": "cd /tmp && git clone https://github.com/xpzouying/xiaohongshu-mcp.git && cd xiaohongshu-mcp && go build -o xiaohongshu-mcp .",
+    "alt_tool": "MediaCrawler --platform xhs"
+  },
+  "douyin": {
+    "command": "douyin-mcp-server",
+    "args": [],
+    "env": {},
+    "when": "需要获取明星抖音账号视频/文案时",
+    "needs_auth": false,
+    "install": "uv tool install douyin-mcp-server"
+  }
+}
