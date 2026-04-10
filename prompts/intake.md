@@ -15,14 +15,14 @@
 
 ```bash
 # 1. 检查 bilibili-api-python
-python3 -c "import bilibili_api" 2>/dev/null || pip install bilibili-api-python
+python3 -c "import bilibili_api" 2>/dev/null || ~/.config/idol-skill/.venv/bin/python3 -c "import bilibili_api" 2>/dev/null || (python3 -m venv ~/.config/idol-skill/.venv && ~/.config/idol-skill/.venv/bin/pip install bilibili-api-python "httpx[socks]")
 
 # 2. 检查 B站凭证
-python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py check
+~/.config/idol-skill/.venv/bin/python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py check
 ```
 
 - 依赖缺失 → 自动 `pip install`，告知用户"正在安装依赖，几秒钟"
-- 凭证缺失或失效 → 运行 `python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py login`，告知用户"需要扫码登录 B站，用 B站 App 扫终端里的二维码"
+- 凭证缺失或失效 → 运行 `~/.config/idol-skill/.venv/bin/python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py login`，告知用户"需要扫码登录 B站，用 B站 App 扫终端里的二维码"
 - 凭证有效 → 静默通过，不输出任何提示
 - 数据目录不存在 → 自动 `mkdir -p ~/.config/idol-skill/idols/`
 
@@ -43,15 +43,15 @@ python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py check
 
 ```bash
 # 搜索相关视频
-python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 采访"
-python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 综艺"
-python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 直播"
+~/.config/idol-skill/.venv/bin/python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 采访"
+~/.config/idol-skill/.venv/bin/python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 综艺"
+~/.config/idol-skill/.venv/bin/python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 直播"
 ```
 
 从搜索结果中选 **播放量最高的 5-10 个视频**（优先采访/综艺/直播，跳过纯剪辑/混剪），逐个抓字幕：
 
 ```bash
-python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py subtitle {bvid}
+~/.config/idol-skill/.venv/bin/python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py subtitle {bvid}
 ```
 
 - 有字幕 → 存入语料池，标注 🟢一手
