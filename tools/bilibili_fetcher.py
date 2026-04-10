@@ -14,13 +14,15 @@ Usage:
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 from bilibili_api import video, search, sync
 
 # Auto-load saved credential
 _credential = None
-_CRED_PATH = Path.home() / ".config" / "idol-skill" / "bilibili_credential.json"
+_CONFIG_DIR = Path(os.environ.get("IDOL_DATA_DIR", Path.home() / ".config" / "idol-skill" / "idols")).parent
+_CRED_PATH = _CONFIG_DIR / "bilibili_credential.json"
 if _CRED_PATH.exists():
     from bilibili_api import Credential
     _cred_data = json.loads(_CRED_PATH.read_text())

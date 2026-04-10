@@ -18,11 +18,11 @@
 python3 -c "import bilibili_api" 2>/dev/null || pip install bilibili-api-python
 
 # 2. 检查 B站凭证
-python3 tools/bilibili_auth.py check
+python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py check
 ```
 
 - 依赖缺失 → 自动 `pip install`，告知用户"正在安装依赖，几秒钟"
-- 凭证缺失或失效 → 运行 `python3 tools/bilibili_auth.py login`，告知用户"需要扫码登录 B站，用 B站 App 扫终端里的二维码"
+- 凭证缺失或失效 → 运行 `python3 ~/.claude/skills/idol-skill/tools/bilibili_auth.py login`，告知用户"需要扫码登录 B站，用 B站 App 扫终端里的二维码"
 - 凭证有效 → 静默通过，不输出任何提示
 - 数据目录不存在 → 自动 `mkdir -p ~/.config/idol-skill/idols/`
 
@@ -77,8 +77,10 @@ python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py subtitle {bvid}
 3. WebSearch: "为什么喜欢{idol_name} 长文 OR 深度 OR 分析"
 
 筛选标准：
-- ✅ 要：字数 > 500 的走心分析、"为什么我喜欢他"类长文、人格特质拆解
+- ✅ 要：字数 > 500 **且** 至少含 1 个可核验锚点（具体事件/访谈片段/直接引语/可观察行为模式）
+- ✅ 要：观点和事实分层明确的分析文
 - ❌ 不要：控评模板、刷数据口号、短评打卡、营销号转述
+- ❌ 不要：纯情绪投射、纯夸夸、无事实锚点的长文
 - 标注 🟠粉丝洞察（不是偶像原话，但能补充深层人格理解）
 
 **搜索词策略**：
@@ -182,14 +184,17 @@ python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py subtitle {bvid}
 
 ### C. 粉丝深层洞察
 
+展示前对每条粉丝洞察执行交叉验证：
+1. 找到对应的一手证据（字幕/采访原话）至少 1 条
+2. 标注 support_level: strong（有直接佐证）/ weak（间接相关）/ unsupported（无佐证）
+3. 只展示 strong 和 weak；unsupported 不进入证据卡
+
 ```
 🟠 粉丝视角的人格分析（走心长评提取）：
 
-  1. "{洞察}" — 来源：{知乎/微博/贴吧} [粉丝分析]
-  2. "{洞察}" — 来源：{来源} [粉丝分析]
+  1. "{洞察}" — 来源：{知乎/微博} [粉丝分析, strong, 佐证：{采访A/字幕B}]
+  2. "{洞察}" — 来源：{来源} [粉丝分析, weak, 佐证：{来源}]
   ...
-
-⚠️ 以上为粉丝主观分析，已交叉验证过与一手语料的一致性。
 ```
 
 ### D. 人设档案

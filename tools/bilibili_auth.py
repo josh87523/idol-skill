@@ -19,7 +19,8 @@ import sys
 import time
 from pathlib import Path
 
-CREDENTIAL_PATH = Path.home() / ".config" / "idol-skill" / "bilibili_credential.json"
+_CONFIG_DIR = Path(os.environ.get("IDOL_DATA_DIR", Path.home() / ".config" / "idol-skill" / "idols")).parent
+CREDENTIAL_PATH = _CONFIG_DIR / "bilibili_credential.json"
 
 
 def _save_credential(credential_data: dict) -> None:
@@ -68,7 +69,7 @@ async def _login_qrcode_async() -> None:
 
     # Poll for login result
     for _ in range(60):  # 120 seconds timeout
-        time.sleep(2)
+        await asyncio.sleep(2)
         state = await qr_login.check_state()
 
         if state == QrCodeLoginEvents.DONE:

@@ -11,7 +11,7 @@
 
 1. 读取 `$IDOL_DATA_DIR/{slug}/schedule.md`，检查缓存是否过期（>3天）
 2. 如果过期或不存在：
-   - WebSearch: "{idol_name} 最新行程 2026"
+   - WebSearch: "{idol_name} 最新行程"（不写死年份，搜索引擎自动返回最新结果）
    - WebSearch: "{idol_name} 电视剧 综艺 开播 杀青"
    - 从搜索结果中提取行程（时间 + 事件 + 来源 URL）
    - 写入 schedule.md
