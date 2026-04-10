@@ -5,9 +5,26 @@
 ## 核心原则
 
 1. **搜索与交互并行** — 名字一给出就启动所有搜索，不等后续交互完成
-2. **搜原始长文本，不搜语录页** — 目标是采访原文、逐字稿、字幕转录，不是鸡汤化的名句聚合
-3. **两阶段检索** — 第一阶段宽召回长文本，第二阶段从文本内部发现口癖（n-gram/句尾词/自称统计）
+2. **B站字幕优先** — 一手口语数据质量远高于网搜语录，优先用 bilibili_fetcher.py 抓字幕
+3. **两阶段检索** — 第一阶段宽召回（B站字幕 + WebSearch），第二阶段从文本内部发现口癖（n-gram/句尾词/自称统计）
 4. **证据卡验证** — 每个候选特征附证据句+来源+置信度，用户做减法不做加法
+
+## Step 0: 环境自检（静默执行，不问用户）
+
+每次 `/create-idol` 先跑：
+
+```bash
+# 1. 检查 bilibili-api-python
+python3 -c "import bilibili_api" 2>/dev/null || pip install bilibili-api-python
+
+# 2. 检查 B站凭证
+python3 tools/bilibili_auth.py check
+```
+
+- 依赖缺失 → 自动 `pip install`，告知用户"正在安装依赖，几秒钟"
+- 凭证缺失或失效 → 运行 `python3 tools/bilibili_auth.py login`，告知用户"需要扫码登录 B站，用 B站 App 扫终端里的二维码"
+- 凭证有效 → 静默通过，不输出任何提示
+- 数据目录不存在 → 自动 `mkdir -p ~/.config/idol-skill/idols/`
 
 ## Step 1: 基础录入 + 启动搜索
 
@@ -18,28 +35,45 @@
 
 ### A. 后台两阶段搜索（不阻塞交互）
 
-#### 第一阶段：宽召回原始长文本
+#### 第一阶段：宽召回（B站字幕 + WebSearch 并行）
 
-立即并行启动以下搜索（目标：采访原文、逐字稿、字幕文本）：
+**路线 1：B站字幕（主力，一手数据）**
 
+```bash
+# 搜索相关视频
+python3 tools/bilibili_fetcher.py search "{idol_name} 采访"
+python3 tools/bilibili_fetcher.py search "{idol_name} 综艺"
+python3 tools/bilibili_fetcher.py search "{idol_name} 直播"
+```
+
+从搜索结果中选 **播放量最高的 5-10 个视频**（优先采访/综艺/直播，跳过纯剪辑/混剪），逐个抓字幕：
+
+```bash
+python3 tools/bilibili_fetcher.py subtitle {bvid}
+```
+
+- 有字幕 → 存入语料池，标注 🟢一手
+- 无字幕 → 跳过，不强求
+
+**路线 2：WebSearch（补充，二手数据）**
+
+同时并行启动：
 1. WebSearch: "{idol_name} 采访 原文 专访 全文"
-2. WebSearch: "{idol_name} 逐字稿 OR 字幕 OR 文字版 OR transcript"
-3. WebSearch: "{idol_name} 综艺 直播 说了什么 原话"
-4. WebSearch: "{idol_name} 出道 经历 大事记 时间线"
-5. WebSearch: "{idol_name} 性格 兴趣 三观"（弱特征，辅助用）
+2. WebSearch: "{idol_name} 逐字稿 OR 字幕 OR 文字版"
+3. WebSearch: "{idol_name} 出道 经历 大事记 时间线"
+4. WebSearch: "{idol_name} 性格 兴趣 三观"（弱特征，辅助用）
+
+对搜索结果用 WebFetch 抓取 top 3-5 页长文本（优先选字数多、有直接引语的页面）。标注 🟡二手。
 
 **搜索词策略**：
 - 发现阶段不带引号，宽召回
 - 包含偶像的别名/昵称/团体名扩展（如"坤坤""KUN"）
-- 优先抓取：媒体专访原文 > 粉丝逐字稿 > B站专栏 > 语录整理页（兜底）
-
-对搜索结果用 WebFetch/Firecrawl 抓取 top 3-5 页**长文本内容**（优先选字数多、有直接引语的页面）。
 
 **争议人物检测**也在此阶段同步进行（见下方"争议人物检测"节）。
 
 #### 第二阶段：从长文本中发现口癖
 
-对抓取到的长文本，做本地特征挖掘（LLM 分析 + quirk_extractor.py 统计）：
+合并 B站字幕 + WebSearch 长文本，做本地特征挖掘（LLM 分析 + quirk_extractor.py 统计）：
 
 - **高频短语/句式** — 反复出现的独特表达
 - **句尾语气词** — 常用的语气词分布
@@ -49,6 +83,10 @@
 - **句长分布** — 长句型还是短句型
 
 关键：**口癖是从文本中统计发现的，不是从搜索引擎搜"口癖"两个字得来的。**
+
+运行 quirk_extractor.py 后检查 `data_quality` 字段：
+- `flag: "ok"` → 数据质量够，继续
+- `flag: "likely_edited_source"` → 语气词密度过低，提示用户"搜到的语料可能经过编辑，口癖还原精度可能受影响，建议补充更多 B站视频字幕"
 
 ### B. 继续交互（不等搜索完成）
 

@@ -108,5 +108,5 @@
 - [x] 微博 MediaCrawler 登录选择器失效，需更新 `[+0409]`
 - [x] 抖音 API 被反爬，需签名/cookie `[+0409]`
 - **结论**：Phase 1 聚焦 B站，其他平台反爬成本 > 收益，延后 `[+0409]`
+- [x] intake.md 集成 bilibili_fetcher.py 到搜索流程 `[+0410]`
 - [ ] 用 B站字幕跑完整的蔡徐坤人格重建，验证质量提升
-- [ ] intake.md 集成 bilibili_fetcher.py 到搜索流程
