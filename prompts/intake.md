@@ -39,23 +39,26 @@ python3 tools/bilibili_auth.py check
 
 **路线 1：B站字幕（主力，一手数据）**
 
+注意：`tools/` 路径相对于 skill 安装目录 `~/.claude/skills/idol-skill/`。
+
 ```bash
 # 搜索相关视频
-python3 tools/bilibili_fetcher.py search "{idol_name} 采访"
-python3 tools/bilibili_fetcher.py search "{idol_name} 综艺"
-python3 tools/bilibili_fetcher.py search "{idol_name} 直播"
+python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 采访"
+python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 综艺"
+python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py search "{idol_name} 直播"
 ```
 
 从搜索结果中选 **播放量最高的 5-10 个视频**（优先采访/综艺/直播，跳过纯剪辑/混剪），逐个抓字幕：
 
 ```bash
-python3 tools/bilibili_fetcher.py subtitle {bvid}
+python3 ~/.claude/skills/idol-skill/tools/bilibili_fetcher.py subtitle {bvid}
 ```
 
 - 有字幕 → 存入语料池，标注 🟢一手
 - 无字幕 → 跳过，不强求
+- **常见问题**：部分视频无字幕（up 主没上传），这是正常的，多搜几个视频补量
 
-**路线 2：WebSearch（补充，二手数据）**
+**路线 2：WebSearch（补充）**
 
 同时并行启动：
 1. WebSearch: "{idol_name} 采访 原文 专访 全文"
@@ -64,6 +67,19 @@ python3 tools/bilibili_fetcher.py subtitle {bvid}
 4. WebSearch: "{idol_name} 性格 兴趣 三观"（弱特征，辅助用）
 
 对搜索结果用 WebFetch 抓取 top 3-5 页长文本（优先选字数多、有直接引语的页面）。标注 🟡二手。
+
+**路线 3：粉丝深度分析（人格洞察的关键补充）**
+
+粉丝走心长评比偶像本人的公开表现更能揭示深层人格特质。**不采集刷贴控评**，只找深度分析：
+
+1. WebSearch: "{idol_name} 人格分析 深度 长文"
+2. WebSearch: "{idol_name} 真实性格 粉丝 分析 知乎 OR 微博"
+3. WebSearch: "为什么喜欢{idol_name} 长文 OR 深度 OR 分析"
+
+筛选标准：
+- ✅ 要：字数 > 500 的走心分析、"为什么我喜欢他"类长文、人格特质拆解
+- ❌ 不要：控评模板、刷数据口号、短评打卡、营销号转述
+- 标注 🟠粉丝洞察（不是偶像原话，但能补充深层人格理解）
 
 **搜索词策略**：
 - 发现阶段不带引号，宽召回
@@ -100,18 +116,29 @@ python3 tools/bilibili_fetcher.py subtitle {bvid}
 
 记录：`anti_patterns`
 
-## Step 3: 关系设定
+## Step 3: 你的角色设定
 
-依次问（一条消息里）：
+**这一步必须完整执行，不能跳过。** 一条消息问三个问题：
 
-1. "你想让他怎么称呼你？"
-2. "你和他是什么关系？"并列出选项：
-   - 1. 女友粉（恋爱互动）
-   - 2. 妈粉（宝贝儿子）
-   - 3. cp粉（主要聊cp的事）— 如选此项追问 cp 对象是谁
-   - 4. 公公粉/嬷嬷粉（长辈视角）
-   - 5. 唯粉（专注他本人）
-3. "要指定时间线吗？默认是现在的他。比如'2018年的他'、'出道前'、'入狱前'。"
+```
+好，现在设定一下你们的关系：
+
+1️⃣ 你想让他叫你什么？（给个昵称，比如"小鱼""宝宝""哥"都行）
+
+2️⃣ 你和他是什么关系？选一个：
+   1. 女友粉（恋爱互动）
+   2. 妈粉（宝贝儿子）
+   3. cp粉（主要聊cp的事）
+   4. 公公粉/嬷嬷粉（长辈视角）
+   5. 唯粉（专注他本人）
+
+3️⃣ 要指定时间线吗？默认是现在的他。
+   比如"2018年的他"、"出道前"、"入狱前"。不指定就回"不用"。
+```
+
+- 如选 cp粉 → 追问 cp 对象是谁
+- 用户没回答昵称 → **必须追问**，不能跳过，这是后续所有对话的称呼
+- 用户回复后确认一遍："好，他会叫你{昵称}，你们是{关系类型}的关系{，时间线设定在X}。对吗？"
 
 记录：`nickname`, `relationship_type`, `cp_target`（如有）, `timeline_anchor`
 
@@ -153,7 +180,19 @@ python3 tools/bilibili_fetcher.py subtitle {bvid}
  ...
 ```
 
-### C. 人设档案
+### C. 粉丝深层洞察
+
+```
+🟠 粉丝视角的人格分析（走心长评提取）：
+
+  1. "{洞察}" — 来源：{知乎/微博/贴吧} [粉丝分析]
+  2. "{洞察}" — 来源：{来源} [粉丝分析]
+  ...
+
+⚠️ 以上为粉丝主观分析，已交叉验证过与一手语料的一致性。
+```
+
+### D. 人设档案
 
 ```
 搜到的公开人设：
