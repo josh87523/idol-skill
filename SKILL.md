@@ -27,6 +27,8 @@ commands:
     description: 设置偶像的时间线（如"2018年以前"）
   - name: schedule-check
     description: 搜索偶像最新行程
+  - name: groupchat
+    description: 开多偶像真互聊 — 为每个 idol 起一个独立 claude 子进程 + 用户开麦, 每句独立 LLM 推理, 不是剧本式
 ---
 
 # idol-skill
@@ -48,6 +50,7 @@ commands:
 - `/update-profile` → 更新 `$IDOL_DATA_DIR/{当前idol}/profile.md`
 - `/set-timeline` → 更新 `$IDOL_DATA_DIR/{当前idol}/timeline.md` 的 timeline_anchor
 - `/schedule-check` → 搜索偶像行程，更新 schedule.md
+- `/groupchat` → 按 `groupchat/README.md` 启动: 为每个要参加群聊的 idol 起一个 `chat_worker.py --slug <idol>` (从 `$IDOL_DATA_DIR/<slug>/persona.md` 动态加载人设) + 起 `user_mic.py` 让用户开麦. 每句都是独立 claude CLI 子进程推理, 支持任意数量/任意 slug 的 idol
 
 ## 对话模式
 
