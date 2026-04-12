@@ -1,0 +1,8 @@
+.env
+history/
+bgm/*.wav
+bgm/*.mp3
+bgm/*.m4a
+__pycache__/
+*.pyc
+.DS_Store

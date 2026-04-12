@@ -1,0 +1,31 @@
+{
+  "_comment": "每个偶像可选的状态机配置。放在 $IDOL_DATA_DIR/{slug}/voice_chat.json，不放则默认单 state。",
+  "initial_state": "day",
+  "time_rules": {
+    "_comment": "22:00-08:00 自动切 night，其余 day。start>end 表示跨天。",
+    "night_hours": [22, 8]
+  },
+  "triggers": {
+    "_comment": "用户说这些词时切换到对应 state",
+    "night": ["睡不着", "想睡", "哄我睡", "晚安", "好困", "闭眼"],
+    "day": ["早上好", "早安", "起床", "醒了", "白天"]
+  },
+  "states": {
+    "day": {
+      "speaker_env": "VOLC_{SLUG_UPPER}_SPEAKER_ID",
+      "label": "白天·日常版",
+      "length": [50, 200],
+      "model": "haiku",
+      "tone": "现在是白天日常聊天，语气正常、利落。长度 50-200 字，自然短句，符合人设真实口癖。"
+    },
+    "night": {
+      "speaker_env": "VOLC_{SLUG_UPPER}_NIGHT_SPEAKER_ID",
+      "label": "夜晚·温柔版",
+      "bgm": "bgm/brown_noise.wav",
+      "bgm_volume": 0.25,
+      "length": [150, 400],
+      "model": "haiku",
+      "tone": "现在是夜晚安静聊天。对方准备睡觉了。语气放慢、温柔，但仍然是真人聊天不是童话朗诵。长度 150-400 字，严禁编童话（'很久很久以前'）、严禁 guided meditation（'吸气呼气'模板）。"
+    }
+  }
+}
