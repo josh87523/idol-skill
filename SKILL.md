@@ -27,6 +27,8 @@ commands:
     description: 设置偶像的时间线（如"2018年以前"）
   - name: schedule-check
     description: 搜索偶像最新行程
+  - name: voice-chat
+    description: 启动实时语音对话（麦克风 STT → Claude → 克隆 TTS → 播放），和指定偶像面对面说话
 ---
 
 # idol-skill
@@ -48,6 +50,7 @@ commands:
 - `/update-profile` → 更新 `$IDOL_DATA_DIR/{当前idol}/profile.md`
 - `/set-timeline` → 更新 `$IDOL_DATA_DIR/{当前idol}/timeline.md` 的 timeline_anchor
 - `/schedule-check` → 搜索偶像行程，更新 schedule.md
+- `/voice-chat {slug}` → 启动 `tools/voice_chat/voice_chat.py --idol {slug}`，实时语音对话（麦克风 → Whisper STT → Claude → 火山引擎克隆 TTS → afplay）。首次使用需按 `tools/voice_chat/README.md` 配置 `.env`。支持 `--state`（强制日夜状态）、`--fresh`（不续接历史）、`--model`。每个偶像可在 `$IDOL_DATA_DIR/{slug}/voice_chat.json` 自定义多状态机（不同状态不同声线 / 长度 / BGM / 关键词切换）
 
 ## 对话模式
 
