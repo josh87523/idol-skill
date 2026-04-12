@@ -1,0 +1,22 @@
+# 私人 persona 数据 (~/.config/idol-skill/idols 或本地 idols/)
+idols/
+
+# 火山引擎 / API 密钥
+**/.env
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# 本地日志/临时
+*.log
+# groupchat 共享文件都在 /tmp 下, .gitignore 理论上不需要排除 (repo 里也不该有它们)
+# 但留作提醒

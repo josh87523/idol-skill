@@ -27,6 +27,12 @@ commands:
     description: 设置偶像的时间线（如"2018年以前"）
   - name: schedule-check
     description: 搜索偶像最新行程
+  - name: voice-chat
+    description: 启动实时语音对话（麦克风 STT → Claude → 克隆 TTS → 播放），和指定偶像面对面说话
+  - name: groupchat
+    description: 开多偶像真互聊 — 为每个 idol 起一个独立 claude 子进程 + 用户开麦, 每句独立 LLM 推理, 不是剧本式
+  - name: companion
+    description: 偶像陪伴模式 — BGM + 碎碎念 + 随时对话, 三种子模式 (work/sleep/workout)
 ---
 
 # idol-skill
@@ -48,6 +54,9 @@ commands:
 - `/update-profile` → 更新 `$IDOL_DATA_DIR/{当前idol}/profile.md`
 - `/set-timeline` → 更新 `$IDOL_DATA_DIR/{当前idol}/timeline.md` 的 timeline_anchor
 - `/schedule-check` → 搜索偶像行程，更新 schedule.md
+- `/voice-chat {slug}` → 启动 `tools/voice_chat/voice_chat.py --idol {slug}`，实时语音对话（麦克风 → Whisper STT → Claude → 火山引擎克隆 TTS → afplay）。首次使用需按 `tools/voice_chat/README.md` 配置 `.env`。支持 `--state`（强制日夜状态）、`--fresh`（不续接历史）、`--model`。每个偶像可在 `$IDOL_DATA_DIR/{slug}/voice_chat.json` 自定义多状态机（不同状态不同声线 / 长度 / BGM / 关键词切换）
+- `/groupchat` → 按 `groupchat/README.md` 启动: 为每个要参加群聊的 idol 起一个 `chat_worker.py --slug <idol>` (从 `$IDOL_DATA_DIR/<slug>/persona.md` 动态加载人设) + 起 `user_mic.py` 让用户开麦. 每句都是独立 claude CLI 子进程推理, 区别于"一次 LLM 出多行剧本"的配音剧模式. 支持任意数量/任意 slug 的 idol, 只要先 `/create-idol` 过且 `.env` 里配了 `VOLC_<SLUG>_SPEAKER_ID`
+- `/companion {slug} [--mode work|sleep|workout]` → 启动 `companion/companion.py --slug {slug} --mode {mode}`. 偶像陪伴模式: BGM 持续播放 + 偶像定时碎碎念 (预缓存零延迟) + 用户随时开麦对话 + 对话历史 jsonl 持久化. 三种子模式: work(工作学习), sleep(哄睡), workout(健身). BGM 目录按模式分 (bgm_work/bgm_sleep/bgm_workout), 偶像说话时 BGM 自动 duck
 
 ## 对话模式
 
